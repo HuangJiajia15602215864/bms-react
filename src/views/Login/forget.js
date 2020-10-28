@@ -11,21 +11,22 @@ class Forget extends React.Component {
   constructor(){
     super()
     this.state = {
-      validateForm: {
+      validateForm: {// 第一步
         phone: '',
         imgCode: '',
         code: ''
       },
-      form: {
+      form: {// 第二步
         password: '',
         repeatPassword: ''
       },
-      formType: 'validate',
+      formType: 'validate',// validate第一步、password第二步
       codeText: '获取验证码',
-      disabled: false
+      disabled: false// 验证码按钮
     }
   }
 
+  // 点击找回密码
   handleNext = (event) => {
     event.preventDefault()
     const { validateForm } = this.state
@@ -46,6 +47,8 @@ class Forget extends React.Component {
       }
     })
   }
+
+  // 点击上一步
   handlePrev = (event) => {
     event.preventDefault()
     this.setState({
@@ -56,23 +59,28 @@ class Forget extends React.Component {
       }
     })
   }
+
+  // 验证手机号
   handleValidate = (e) => {
     const value = e.target.value
     if (value && !PhoneRegexp.test(value)) {
       message.error('手机号码格式不正确')
     }
   }
+
+  // 处理输入变化
   handleInputChange = (event, formType, name) => {
     const { validateForm, form } = this.state
     const value = event.target.value
-    if (formType === 'validate') {
+    if (formType === 'validate') {// 第一步
       validateForm[name] = value
       this.setState({ validateForm })
-    } else {
+    } else {// 第二步
       form[name] = value
       this.setState({ form })
     }
   }
+
   // 验证码已发送到手机，请注意查收
   handleGetCode = () => {
     if (!this.state.validateForm.phone || !PhoneRegexp.test(this.state.validateForm.phone)) {
@@ -109,6 +117,8 @@ class Forget extends React.Component {
       })
     })
   }
+
+  // 第二步，密码确认
   handleResetPassword = (event) => {
     event.preventDefault()
     const { form } = this.state

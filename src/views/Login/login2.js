@@ -1,19 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'// 跳转路由使用
 
-import { message, notification } from 'antd'
+import { message, notification } from 'antd'// ant通知组件
 import {
   LoadingOutlined
-} from '@ant-design/icons';
-import './style2.scss'
+} from '@ant-design/icons';// ant加载图标
 
-const { $http } = React
+import './style2.scss'// 导入样式
+const { $http } = React// HTTP请求
 
 class Login2 extends React.Component {
   constructor() {
     super()
     this.state = {
-      loginType: true,
+      loginType: true,// true：登录、false：注册
       loading: false,
       loginForm: {
         username: '',
@@ -27,6 +27,7 @@ class Login2 extends React.Component {
     }
   }
 
+  // 登录注册切换
   toggleClass = () => {
     this.setState((state) => {
       if (state.loginType) {
@@ -41,14 +42,16 @@ class Login2 extends React.Component {
       }
       return { loginType: state.loginType }
     })
-    this.setState({ loginType: !this.state.loginType })
+    this.setState({ loginType: !this.state.loginType })// 反转状态
   }
+
+  // 输入改变
   handleInputChange = (event, formType, labelName) => {
     const { loginForm, registerForm } = this.state
-    if (formType === 'register') {
+    if (formType === 'register') {// 注册
       registerForm[labelName] = event.target.value
       this.setState({ registerForm })
-    } else {
+    } else {// 登录
       loginForm[labelName] = event.target.value
       this.setState({
         loginForm,
@@ -60,6 +63,8 @@ class Login2 extends React.Component {
       })
     }
   }
+
+  // 登录
   handleLogin = (event) => {
     event.preventDefault()
     const { loginForm } = this.state
@@ -79,6 +84,8 @@ class Login2 extends React.Component {
       this.props.history.push('/home')
     })
   }
+
+  // 注册
   handleRegister = (event) => {
     event.preventDefault()
     const { registerForm } = this.state
@@ -116,7 +123,7 @@ class Login2 extends React.Component {
 
   render() {
     const { loginType, registerForm, loginForm, loading } = this.state
-    const activeClass = !loginType ? 'right-panel-active' : ''
+    const activeClass = !loginType ? 'right-panel-active' : ''// 如果是注册，则在样式前面添加right-panel-active
     return (
       <div className="login-wrapper">
         <div className={`${activeClass} container`} id="container">

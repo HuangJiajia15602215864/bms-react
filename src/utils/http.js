@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
-message.config({ maxCount: 3 })
+message.config({ maxCount: 3 })// 全局配置，最大显示数
 
 const MOCK_API = 'https://fastmock.site/mock/d451d648bf7d24e6bcfcd03fd9bfe605/react-tutorials/api/'
 const whiteApi = ['login', 'register', 'send/code', 'reset/password']
@@ -13,6 +13,7 @@ const http = axios.create({
   timeout: 1000 * 60 * 3
 })
 
+// 请求拦截器
 http.interceptors.request.use(function(config) {
   const { url } = config
   if (!whiteApi.includes(url)) {
@@ -31,6 +32,7 @@ http.interceptors.request.use(function(config) {
   return Promise.reject(error)
 })
 
+// 响应拦截器
 http.interceptors.response.use(function(response) {
   const data = response.data
   if (data.code === 200) {

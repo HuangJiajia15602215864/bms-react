@@ -3,22 +3,26 @@
 .layout-container {
   height: 100%;
 
+  // logo
   .logo {
-    margin: 16px;
-    height: 32px;
+    padding: 16px;
     line-height: 32px;
     color: map-get($colors, 'white');
+    font-size: map-get($fontSizes, '16');
+    background: #000;
 
     .icon {
       vertical-align: middle;
-      font-size: map-get($fontSizes, '30');
-      margin-right: 5px;
+      font-size: map-get($fontSizes, '36');
+      margin-right: 10px;
     }
   }
+  // 面包屑
   .trigger {
+    float: left;
     font-size: map-get($fontSizes, '18');;
     line-height: 64px;
-    padding: 0 24px;
+    padding: 0 12px;
     cursor: pointer;
     transition: color 0.3s;
 
@@ -26,7 +30,7 @@
       color: #1890ff;
     }
   }
-
+  // 右上角
   .header-right {
     float: right;
     position: relative;
@@ -36,14 +40,12 @@
   }
   .layout-header {
     padding: 0;
-    border: 1px solid map-get($colors, 'light-grey');
+    border:0;
+    border-bottom: 1px solid map-get($colors, 'light-grey');
   }
   .layout-nav {
-    height: 50px;
-    line-height: 50px;
-    padding: 0 16px;
-    background-color: map-get($colors, 'white');
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    float: left;
+    line-height: 64px;
   }
   .layout-content--info {
     padding: 15px;

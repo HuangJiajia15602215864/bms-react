@@ -18,6 +18,7 @@ const { Header, Sider, Content } = Layout
 const { $http } = React
 const style = require('./index.module.scss')
 
+// 菜单
 const mapMenu = [
   { key: 'home', name: '首页' },
   { key: 'user', name: '用户列表', parentName: '用户管理', parentKey: 'user-menu' },
@@ -35,29 +36,32 @@ const mapMenu = [
 class LayoutContainer extends React.Component {
   constructor(props) {
     super(props)
-    const currentPath = this.splitPath()
-    const openKeys = this.handleFindOpenMenu(currentPath)
-    const userInfo = JSON.parse(sessionStorage.getItem('userInfo')) || {}
+    const currentPath = this.splitPath()// 获取菜单key
+    const openKeys = this.handleFindOpenMenu(currentPath)// 处理面包屑
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo')) || {}// 从浏览器存储中获取用户信息
     this.state = {
-      collapsed: false,
-      title: '后台管理系统',
-      selectedKeys: [currentPath],
-      defaultOpenKeys: [openKeys.menuKey],
-      breadcrumb: openKeys.breadcrumb,
-      userInfo
+      collapsed: false,// 侧边栏是否折叠
+      title: '后台管理系统',// 侧边栏标题
+      selectedKeys: [currentPath],// 当前访问菜单key
+      defaultOpenKeys: [openKeys.menuKey],// 当前访问父级菜单key
+      breadcrumb: openKeys.breadcrumb,// 面包屑
+      userInfo// 用户信息
     }
   }
 
+  // 获取菜单key
   splitPath = () => {
     const { location } = this.props
     return location.pathname.substr(1)
   }
+  // 是否折叠切换
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
       title: this.state.collapsed ? '后台管理系统' : ''
     })
   }
+  // 处理面包屑
   handleFindOpenMenu = (selectedKeys) => {
     const findMenu = mapMenu.find(subMenu => subMenu.key === selectedKeys)
     let breadcrumb = []
@@ -69,22 +73,25 @@ class LayoutContainer extends React.Component {
       breadcrumb
     }
   }
-  handleMenuClick = (item) => {
+  // 右上角用户信息点击
+  handleMenuClick = (item) => { 
     const { history } = this.props
     const { key } = item
-    if (key === 'logout') {
+    if (key === 'logout') {// 退出登录
       $http.get('logout').then(() => {
         sessionStorage.clear()
         history.push('/login')
       })
-    } else {
+    } else {// 基本资料或修改密码，处理路由跳转和面包屑
       this.setState({
-        selectedKeys: [item.key]
+        selectedKeys: [item.key],
+        breadcrumb:this.handleFindOpenMenu(item.key).breadcrumb
       }, () => {
         history.push(item.key)
       })
     }
   }
+  // 处理路由和面包屑（类似右上角用户信息点击）
   handleRouter = (item) => {
     const { history } = this.props
     const findMenu = mapMenu.find(subMenu => subMenu.key === item.key)
@@ -98,12 +105,12 @@ class LayoutContainer extends React.Component {
       history.push(item.key)
     })
   }
-
+  
   render() {
     const { route } = this.props
     const { collapsed, title, selectedKeys, userInfo, defaultOpenKeys, breadcrumb } = this.state
 
-    const userDropdownMenu = (
+    const userDropdownMenu = (// 右上角菜单变量
       <Menu onClick={this.handleMenuClick}>
         <Menu.Item key="basic-info">基本资料</Menu.Item>
         <Menu.Item key="modify-password">修改密码</Menu.Item>
@@ -188,6 +195,9 @@ class LayoutContainer extends React.Component {
                   className: style['trigger'],
                   onClick: this.toggle,
                 })}
+                <Breadcrumb className={style['layout-nav']} separator=">">
+                  {breadcrumb.map((item, index) => <Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>)}
+                </Breadcrumb>                
                 <div className={style['header-right']}>
                   <div className="info mr-20">
                     <Avatar src={userInfo.avatar} />
@@ -202,9 +212,6 @@ class LayoutContainer extends React.Component {
                 </div>
               </Header>
               <Content className={style['layout-content']}>
-                <Breadcrumb className={style['layout-nav']}>
-                  {breadcrumb.map((item, index) => <Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>)}
-                </Breadcrumb>
                 <div className={`${style['layout-content--info']}`}>
                 {renderRoutes(route.routes)}
                 </div>
