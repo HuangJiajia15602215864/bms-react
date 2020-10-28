@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Col, Row, Tag, Space, Progress, Radio, Table } from 'antd'
+import { Card, Col, Row, Tag, Space, Progress, Radio, Table } from 'antd'// 组件
 import {
   FlagOutlined,
   SmileOutlined,
@@ -10,17 +10,19 @@ import {
   ClockCircleOutlined
 } from '@ant-design/icons';
 
-import Echarts from 'echarts'
+import Echarts from 'echarts'// 图表
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 
-import { formatCurrency } from '@/utils'
+import { formatCurrency } from '@/utils'// 处理函数
 import style from './style.module.scss'
 
-import { HEAD_BANNER, CHART_OPTION } from './constants'
+import { HEAD_BANNER, CHART_OPTION } from './constants'// 数据结构
 
 const { $http } = React
+
+// 用户列表
 const UserColumns = [
   {
     title: '用户名',
@@ -78,7 +80,7 @@ const UserColumns = [
     }
   }
 ]
-
+// 项目进展
 const TaskColumns = [
   {
     title: '任务',
@@ -126,17 +128,17 @@ class Home extends React.Component {
   constructor() {
     super()
     this.state = {
-      chart: null,
-      date: '1',
-      headerBanner: {
+      chart: null,// 图表元素
+      date: '1',// 去年、今年
+      headerBanner: {// 顶部卡片数据初始化
         visit: [0, '0万'],
         download: [0, '0%'],
         income: [0, '***'],
         activeUser: [0, '0%']
       },
-      chartData: {},
-      userTableData: [],
-      taskTableData: []
+      chartData: {},// 图表数据
+      userTableData: [],// 用户列表
+      taskTableData: []// 项目进展
     }
   }
 
@@ -161,7 +163,7 @@ class Home extends React.Component {
     })
   }
 
-  showIcon = (type) => {
+  showIcon = (type) => {// 顶部图表转化
     switch(type) {
       case 'Flag':
         return <FlagOutlined />
@@ -177,7 +179,7 @@ class Home extends React.Component {
   }
 
   handleGetChart = () => {
-    this.chart.showLoading({ color: '#5FB878'})
+    this.chart.showLoading({ color: '#5FB878'})// 图表加载图标颜色
     $http.get('visit/chart').then(res => {
       this.chart.hideLoading()
       this.setState({ chartData: res })
@@ -196,10 +198,10 @@ class Home extends React.Component {
   }
 
   render() {
-    const { headerBanner, chartData, userTableData, taskTableData } = this.state
+    const { headerBanner, chartData, userTableData, taskTableData } = this.state// 数据
     return (
       <div className={style['page-home']}>
-        <div className="header-wrapper">
+        <div>
           <Row gutter={16}>
             {HEAD_BANNER.map(item => (
               <Col span={6} key={item.key}>
@@ -221,7 +223,7 @@ class Home extends React.Component {
             ))}
           </Row>
         </div>
-        <div className="home-chart mt-20">
+        <div className="mt-20">
           <Card title="访问量" extra={
             <Radio.Group size="small" className="fs-12" value={this.state.date} onChange={this.handleYearChange}>
               <Radio.Button value="1">今年</Radio.Button>
