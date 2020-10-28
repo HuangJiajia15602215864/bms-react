@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Row, Col, Input, Button, Select, Space, Card, Table, Modal, message } from 'antd'
+import { Form, Row, Col, Input, Button, Select, Space, Table, Modal, message } from 'antd'
 
 import {
   EditOutlined,
@@ -11,7 +11,7 @@ import {
 import UpdateUser from './updateUser'
 
 const {$http} = React
-const searchItem = [
+const searchItem = [// 筛选条件
   { key: 'username', name: 'username', label: '用户名', defaultValue: null, type: 'input', placeholder: '请输入' },
   { key: 'email', name: 'email', label: '邮箱', defaultValue: null, type: 'input', placeholder: '请输入' },
   { key: 'sex', name: 'sex', label: '性别', defaultValue: -1, type: 'select', options: [
@@ -25,20 +25,20 @@ class User extends React.Component {
   constructor() {
     super()
     this.state = {
-      selectedRowKeys: [],
-      loading: false,
-      query: {
+      selectedRowKeys: [],// 选中行
+      loading: false,// 是否加载
+      query: {// 筛选条件
         username: '',
         email: '',
         sex: -1
       },
-      userTableData: [],
-      pagination: {
+      userTableData: [],// 用户列表数据
+      pagination: {// 分页
         current: 1,
         pageSize: 10,
         total: 0
       },
-      columns: [
+      columns: [// 表格列
         { title: '用户名', dataIndex: 'username' },
         { title: '性别', dataIndex: 'sex', render: (text, record) => {
           return (
@@ -57,12 +57,13 @@ class User extends React.Component {
           )
         }},
       ],
-      modalVisible: false,
-      modalForm: {},
-      modalType: 'add'
+      modalVisible: false,// 弹窗是否显示
+      modalForm: {},// 弹窗内容
+      modalType: 'add'// 弹窗类型
     }
   }
 
+  // 引用
   formRef = React.createRef()
   modalRef = null
 
@@ -70,9 +71,10 @@ class User extends React.Component {
     this.getUserList()
   }
 
+  // 获取用户列表
   getUserList = () => {
     const { query, pagination } = this.state
-    const params = {}
+    const params = {}// 组装接口参数
     for (let key in query) {
       if (query[key]) params[key] = query[key]
     }
@@ -89,15 +91,20 @@ class User extends React.Component {
       }, loading: false })
     })
   }
-
+ 
+  // 查询
   onSearch = values => {
     this.setState({ query: values }, () => {
       this.getUserList()
     })
   }
+
+  // 选中行变化
   onSelectedChange = (selectedRowKeys) => {
     this.setState({ selectedRowKeys })
   }
+
+  // 分页变化
   paginationChange = (pagination) => {
     this.setState({pagination: {
       current: pagination.current,
@@ -106,6 +113,8 @@ class User extends React.Component {
       this.getUserList()
     })
   }
+
+  // 编辑
   onEdit = (record) => {
     this.setState({
       modalVisible: true,
@@ -124,6 +133,8 @@ class User extends React.Component {
       }, 100)
     })
   }
+
+  // 删除
   onDelete = (record) => {
     Modal.confirm({
       title: '删除用户',
@@ -137,6 +148,8 @@ class User extends React.Component {
       }
     })
   }
+
+  // 批量删除
   onMultipleDelete = () => {
     const { selectedRowKeys } = this.state
     if (!selectedRowKeys.length) {
@@ -147,9 +160,13 @@ class User extends React.Component {
       this.setState({ selectedRowKeys: [] }, () => this.getUserList())
     })
   }
+
+  // 添加
   onOpenModal = () => {
     this.setState({modalVisible: true, modalType: 'add', modalForm: null})
   }
+
+  // 弹窗保存
   onModalSave = (values) => {
     const { modalForm, modalType } = this.state
     if (modalType === 'add') {
@@ -165,6 +182,8 @@ class User extends React.Component {
       })
     }
   }
+
+  // 弹窗取消
   onModalCancel = () => {
     this.modalRef.formRef.current.resetFields()
     this.setState({modalVisible: false, modalType: 'add', modalForm: null})
@@ -178,7 +197,7 @@ class User extends React.Component {
     }
     const getFields = () => {
       const children = searchItem.map(item => (
-        <Col span={6} key={item.key}>
+        <Col span={4} key={item.key}>
           <Form.Item
             name={item.name}
             label={item.label}
@@ -204,22 +223,22 @@ class User extends React.Component {
       </Col>
     )
     return (
-      <Card title="用户列表">
+      <div>
         <Form ref={this.formRef}
           name="search"
           onFinish={this.onSearch}>
             <Row gutter={24}>
               {getFields()}
               {searchControl}
+              <Space className="mb-35">
+                <Button onClick={this.onOpenModal} className="button-color-green"><PlusOutlined />添加</Button>
+                <Button type="danger" onClick={this.onMultipleDelete}><DeleteOutlined />批量删除</Button>
+              </Space>
             </Row>
         </Form>
-        <Space className="mb-10">
-          <Button type="primary" onClick={this.onOpenModal}><PlusOutlined />添加</Button>
-          <Button type="primary" onClick={this.onMultipleDelete}><DeleteOutlined />批量删除</Button>
-        </Space>
-        <Table loading={loading} bordered rowSelection={rowSelection} columns={columns} pagination={pagination} onChange={this.paginationChange} dataSource={userTableData} />
+        <Table loading={loading} rowSelection={rowSelection} columns={columns} pagination={pagination} onChange={this.paginationChange} dataSource={userTableData} />
         <UpdateUser ref={f => this.modalRef = f} modalType={modalType} visible={modalVisible} onSave={this.onModalSave} onCancel={this.onModalCancel} />
-      </Card>
+      </div>
     )
   }
 }

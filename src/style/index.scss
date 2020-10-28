@@ -89,3 +89,66 @@ table { border-collapse:collapse; border-spacing:0; }
     }
   }
 }
+
+.button-color-volcano {
+  background-color: #FA541C;
+  border-color: #FA541C;
+ 
+  &:hover, &:focus {
+    background-color: #ff7a45;
+    border-color: #ff7a45;
+  }
+ 
+  &:active, &.active {
+    background-color: #d4380d;
+    border-color: #d4380d;
+  }
+}
+ 
+.button-color-sunset {
+  background-color: #FAAD14;
+  border-color: #FAAD14;
+ 
+  &:hover, &:focus {
+    background-color: #ffc53d;
+    border-color: #ffc53d;
+  }
+ 
+  &:active, &.active {
+    background-color: #d48806;
+    border-color: #d48806;
+  }
+}
+ 
+.button-color-green {
+  background-color: #52C41A;
+  border-color: #52C41A;
+  color: #fff;
+ 
+  &:hover, &:focus {
+    background-color: #73d13d;
+    border-color: #73d13d;
+    color: #fff;
+  }
+ 
+  &:active, &.active {
+    background-color: #389e0d;
+    border-color: #389e0d;
+    color: #fff;
+  }
+}
+ 
+.button-color-purple {
+  background-color: #722ED1;
+  border-color: #722ED1;
+ 
+  &:hover, &:focus {
+    background-color: #9254de;
+    border-color: #9254de;
+  }
+ 
+  &:active, &.active {
+    background-color: #531dab;
+    border-color: #531dab;
+  }
+}
