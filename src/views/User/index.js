@@ -39,16 +39,16 @@ class User extends React.Component {
         total: 0
       },
       columns: [// 表格列
-        { title: '用户名', dataIndex: 'username' },
-        { title: '性别', dataIndex: 'sex', render: (text, record) => {
+        { title: '用户名', dataIndex: 'username',align:'center' },
+        { title: '性别', dataIndex: 'sex',align:'center', render: (text, record) => {
           return (
             <span>{text === 0 ? '男' : '女'}</span>
           )
         }},
-        { title: '联系方式', dataIndex: 'phone' },
-        { title: '邮箱地址', dataIndex: 'email' },
-        { title: '创建时间', dataIndex: 'createDate' },
-        { title: '操作', key: 'action', render: (text, record) => {
+        { title: '联系方式', dataIndex: 'phone',align:'center' },
+        { title: '邮箱地址', dataIndex: 'email',align:'center' },
+        { title: '创建时间', dataIndex: 'createDate' ,align:'center'},
+        { title: '操作', key: 'action',align:'center', render: (text, record) => {
           return (
             <React.Fragment>
               <Button type="link" onClick={() => this.onEdit(record)}><EditOutlined />编辑</Button>

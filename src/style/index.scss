@@ -90,6 +90,10 @@ table { border-collapse:collapse; border-spacing:0; }
   }
 }
 
+.ant-table-tbody>tr>td {
+  padding: 5px 0px;
+}
+
 .button-color-volcano {
   background-color: #FA541C;
   border-color: #FA541C;

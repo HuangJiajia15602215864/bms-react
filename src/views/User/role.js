@@ -33,10 +33,10 @@ class Role extends React.Component {
       role: -1,
       roleTableData: [],
       columns: [
-        { title: '角色名', dataIndex: 'roleName' },
-        { title: '拥有权限', dataIndex: 'auth' },
-        { title: '具体描述', dataIndex: 'description' },
-        { title: '操作', key: 'action', render: (text, record) => {
+        { title: '角色名', dataIndex: 'roleName',width:'300px' },
+        { title: '拥有权限', dataIndex: 'auth',width:'400px'  },
+        { title: '具体描述', dataIndex: 'description',width:'500px' },
+        { title: '操作', key: 'action',render: (text, record) => {
           return (
             <React.Fragment>
               <Button type="link" onClick={() => this.onEdit(record)}><EditOutlined />编辑</Button>
@@ -58,6 +58,7 @@ class Role extends React.Component {
     this.getRoleList()
   }
 
+  // 获取角色信息
   getRoleList = () => {
     const { query } = this.state
     const params = {}
@@ -76,14 +77,19 @@ class Role extends React.Component {
     })
   }
 
+  // 查询
   onSearch = values => {
     this.setState({ query: values }, () => {
       this.getRoleList()
     })
   }
+
+  // 当选中行改变
   onSelectedChange = (selectedRowKeys) => {
     this.setState({ selectedRowKeys })
   }
+
+  // 编辑
   onEdit = (record) => {
     $http.get('role/details', {id: record.id}).then(res => {
       this.setState({
@@ -93,6 +99,8 @@ class Role extends React.Component {
       })
     })
   }
+
+  // 删除
   onDelete = (record) => {
     Modal.confirm({
       title: '删除角色',
@@ -106,6 +114,8 @@ class Role extends React.Component {
       }
     })
   }
+
+  // 批量删除
   onMultipleDelete = () => {
     const { selectedRowKeys } = this.state
     if (!selectedRowKeys.length) {
@@ -116,9 +126,13 @@ class Role extends React.Component {
       this.setState({ selectedRowKeys: [] }, () => this.getRoleList())
     })
   }
+
+  // 添加
   onOpenModal = () => {
     this.setState({modalVisible: true, modalType: 'add', modalForm: null})
   }
+
+  // 保存
   onModalSave = (values) => {
     const { modalForm, modalType } = this.state
     if (modalType === 'add') {
@@ -134,6 +148,8 @@ class Role extends React.Component {
       })
     }
   }
+
+  // 取消
   onModalCancel = () => {
     this.modalRef.formRef.current.resetFields()
     this.setState({modalVisible: false, modalType: 'add', modalForm: null})
@@ -186,7 +202,7 @@ class Role extends React.Component {
           <Button type="primary" onClick={this.onOpenModal}><PlusOutlined />添加</Button>
           <Button type="primary" onClick={this.onMultipleDelete}><DeleteOutlined />批量删除</Button>
         </Space>
-        <Table loading={loading} bordered rowSelection={rowSelection} columns={columns} pagination={false} dataSource={roleTableData} />
+        <Table loading={loading} rowSelection={rowSelection} columns={columns} pagination={false} dataSource={roleTableData} />
         <UpdateRole ref={f => this.modalRef = f} visible={modalVisible} modalForm={modalForm} onSave={this.onModalSave} onCancel={this.onModalCancel} />
       </Card>
     )
