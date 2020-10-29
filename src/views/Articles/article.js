@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Form, Row, Col, Input, Button, Select, Space, Card, Table, Tag, Modal, message } from 'antd'
+import { Form, Row, Col, Input, Button, Select, Space, Table, Tag, Modal, message } from 'antd'
 import {
   EditOutlined,
   PlusOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
-  ClearOutlined
+  ClearOutlined,
+  CheckOutlined,
+  CloseOutlined
 } from '@ant-design/icons'
 
 import {
@@ -65,26 +67,27 @@ class Article extends React.Component {
   formRef = React.createRef()
 
   columns = [
-    { title: '文章标题', dataIndex: 'title' },
-    { title: '文章标签', dataIndex: 'tag', render: (text) => {
+    { title: '文章作者', dataIndex: 'author',align:'center' },
+    { title: '文章标签', dataIndex: 'tag',width:'400px',align:'center', render: (text) => {
       return <span>{tags[text] || '未知'}</span>
     }},
-    { title: '文章作者', dataIndex: 'author' },
-    { title: '创建时间', dataIndex: 'createDate' },
-    { title: '发布状态', dataIndex: 'status', render: (text) => {
+    { title: '文章标题', dataIndex: 'title' },
+    { title: '创建时间', dataIndex: 'createDate',align:'center' },
+    { title: '发布状态', dataIndex: 'status',align:'center', render: (text) => {
       const color = text === 0 ? 'green' : ''
       const txt = text === 0 ? '已发布' : '未发布'
+      const icon = text === 0 ? <CheckOutlined />:  <CloseOutlined />
       return (
-        <Tag color={color}>{txt}</Tag>
+        <Tag color={color} icon={icon}>{txt}</Tag>
       )
     }},
-    { title: '操作', key: 'action', render: (text, record) => {
+    { title: '操作', key: 'action', align:'center',render: (text, record) => {
       return (
         <React.Fragment>
           <Button type="link" onClick={() => this.onControl('edit', record)}><EditOutlined />编辑</Button>
           {record.status === 1 ?
-          <Button type="link" onClick={() => this.onControl('delete', record)}><DeleteOutlined />删除</Button>
-            : <Button type="link" onClick={() => this.onControl('takeDown', record)}><ClearOutlined />下架</Button>
+          <Button type="link" danger onClick={() => this.onControl('delete', record)}><DeleteOutlined />删除</Button>
+            : <Button type="link" className="text-grey-9 " onClick={() => this.onControl('takeDown', record)}><ClearOutlined />下架</Button>
           }
         </React.Fragment>
       )
@@ -92,9 +95,9 @@ class Article extends React.Component {
   ]
 
   componentDidMount() {
-    const { onLoadArticleList, pagination = {} } = this.props
+    const { onLoadArticleList, pagination = {} } = this.props// 获取reduce
     this.setState({loading: true})
-    onLoadArticleList({
+    onLoadArticleList({// 获取文章列表
       page: pagination.current,
       pageSize: pagination.pageSize
     }, () => {
@@ -102,6 +105,7 @@ class Article extends React.Component {
     })
   }
 
+  // 查询
   onSearch = values => {
     const { onLoadArticleList, pagination } = this.props
     this.setState({loading: true})
@@ -113,13 +117,18 @@ class Article extends React.Component {
       this.setState({loading: false})
     })
   }
+
+  // 添加
   onOpenModal = () => {
     message.error('此操作你暂无权限！')
   }
+
+  // 下架请求
   onTakeDown = (record, callback) => {
-    // 下架请求
     callback && callback()
   }
+
+  // 操作
   onControl = (type, record) => {
     const { onLoadArticleList, pagination } = this.props
     const { control } = this.state
@@ -165,7 +174,7 @@ class Article extends React.Component {
     const { loading } = this.state;
     const getFields = () => {
       const children = searchItem.map(item => (
-        <Col span={6} key={item.key}>
+        <Col span={4} key={item.key}>
           <Form.Item
             name={item.name}
             label={item.label}
@@ -191,20 +200,20 @@ class Article extends React.Component {
       </Col>
     )
     return (
-      <Card title="用户列表">
+      <div>
         <Form ref={this.formRef}
           name="search"
           onFinish={this.onSearch}>
             <Row gutter={24}>
               {getFields()}
               {searchControl}
+              <Space className="mb-35">
+                <Button type="primary" onClick={this.onOpenModal} className="button-color-green"><PlusOutlined />添加</Button>
+              </Space>
             </Row>
         </Form>
-        <Space className="mb-10">
-          <Button type="primary" onClick={this.onOpenModal}><PlusOutlined />添加</Button>
-        </Space>
-        <Table loading={loading} bordered columns={this.columns} pagination={pagination} onChange={this.paginationChange} dataSource={articleTableData} />
-      </Card>
+        <Table loading={loading} columns={this.columns} pagination={pagination} onChange={this.paginationChange} dataSource={articleTableData} />
+      </div>
     )
   }
 }
