@@ -26,9 +26,4 @@ React 基础入门项目——后台管理系统
 - react-loadable		 
 - react-router-config 	
 - react-router-dom 		
-- redux、react-redux、redux-saga	 
-
-### 仅用于测试，主分支提交第一次。
-### 仅用于测试，主分支提交第二次。
-### 开发线提交
-### 开发线再次提交
+- redux、react-redux、redux-saga
