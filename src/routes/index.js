@@ -110,10 +110,10 @@ const routes = [
         path: '/comments',
         component: RouteComponents.Comment
       },
-      {
-        path: '*',
-        render: () => <Redirect to="/404" />
-      }
+      // {
+      //   path: '*',
+      //   render: () => <Redirect to="/404" />
+      // }
     ]
   },
   {

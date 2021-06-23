@@ -15,11 +15,11 @@ class Login2 extends React.Component {
     this.state = {
       loginType: true,// true：登录、false：注册
       loading: false,
-      loginForm: {
+      loginForm: {// 登录字段
         username: '',
         password: ''
       },
-      registerForm: {
+      registerForm: {// 注册字段
         username: '',
         email: '',
         password: ''

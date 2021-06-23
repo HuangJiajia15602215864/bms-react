@@ -168,6 +168,7 @@ class User extends React.Component {
 
   // 弹窗保存
   onModalSave = (values) => {
+    console.log(values)
     const { modalForm, modalType } = this.state
     if (modalType === 'add') {
       $http.post('user/create', values).then(res => {

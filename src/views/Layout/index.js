@@ -68,9 +68,9 @@ class LayoutContainer extends React.Component {
     breadcrumb.push(findMenu.parentName, findMenu.name)
     breadcrumb = breadcrumb.filter(v => v)
     return {
-      menuKey: findMenu && findMenu.parentKey,
-      subMenu: findMenu && findMenu.key,
-      breadcrumb
+      menuKey: findMenu && findMenu.parentKey,// 父级名称
+      subMenu: findMenu && findMenu.key,// 子级名称
+      breadcrumb// 面包屑数组（包含父子级名称）
     }
   }
   // 右上角用户信息点击
